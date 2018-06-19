@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.example.angel.silentplaces"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //Time utils
+    implementation 'net.danlew:android.joda:2.9.9.4'
+
+    //Schematic
+    annotationProcessor 'net.simonvt.schematic:schematic-compiler:0.7.0'
+    implementation 'net.simonvt.schematic:schematic:0.7.0'
+
+    //Butternife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.0'
+
+    //FlexibleAdapter (recyclerView con más opciones)
+    implementation 'eu.davidea:flexible-adapter:5.0.4'
+    implementation 'eu.davidea:flexible-adapter-ui:1.0.0-b4'
+    implementation 'eu.davidea:flexible-adapter-livedata:1.0.0-b2'
+    implementation 'eu.davidea:flexible-adapter-databinding:1.0.0-b3'
+
+    // swipe a medio camino
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    //Texto justificado
+    implementation 'me.biubiubiu.justifytext:library:1.1'
+    //Permisos
+    implementation 'com.master.android:permissionhelper:2.0'
+    //Servicios de google
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+
+}

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SilentPlaces</string>
+    <string name="add_place_button_text">ADD NEW LOCATION</string>
+    <string name="localization_text">LOCALIZATION</string>
+    <string name="settings_text">SETTINGS</string>
+    <string name="enable_georeferences">ENABLE GEOREFERENCES</string>
+    <string name="localization_permissions_text">LOCATION_PERMISSIONS</string>
+</resources>
