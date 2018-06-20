@@ -2,18 +2,11 @@ package com.example.angel.silentplaces.recycler;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.constraint.ConstraintLayout;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.example.angel.silentplaces.R;
-
-
-import org.joda.time.DateTime;
 
 import java.util.List;
 import java.util.Timer;
@@ -38,15 +31,13 @@ public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
     private Context context;
 
 
-    public PlaceItem(Context context, String placeName,  String placeDirection) {
+    public PlaceItem(Context context, String placeName, String placeDirection) {
         this.context = context;
         this.id = idStatic++;
-        this.placeName=placeName;
-        this.placeDirection=placeDirection;
+        this.placeName = placeName;
+        this.placeDirection = placeDirection;
 
     }
-
-
 
 
     @Override
@@ -72,7 +63,7 @@ public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
 
     @Override
     public PlaceViewHolder createViewHolder(View view, FlexibleAdapter<IFlexible> adapter) {
-        return null;
+        return new PlaceViewHolder(view, adapter);
     }
 
 
@@ -110,7 +101,7 @@ public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
         }
 
 
-        void setFields(String placeName , String placeDirection) {
+        void setFields(String placeName, String placeDirection) {
             this.placeNameTextView.setText(placeName);
             this.placeDirectionTextView.setText(placeDirection);
 

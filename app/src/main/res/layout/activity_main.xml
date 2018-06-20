@@ -118,10 +118,10 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <CheckBox
-                    android:id="@+id/checkBox"
+                    android:id="@+id/permisos_localization_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_
+
                     android:layout_alignParentRight="true"
                     android:layout_gravity="right"
                     android:layout_weight="1" />
