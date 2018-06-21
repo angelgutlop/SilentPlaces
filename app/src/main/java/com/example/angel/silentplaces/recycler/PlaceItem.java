@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.example.angel.silentplaces.R;
+import com.google.android.gms.location.places.Place;
 
 import java.util.List;
 import java.util.Timer;
@@ -26,16 +27,14 @@ public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
 
     private static final int SECONDS_CLOSE = 2;
     private int id;
-    private String placeName;
-    private String placeDirection;
     private Context context;
+    private Place place;
 
 
-    public PlaceItem(Context context, String placeName, String placeDirection) {
+    public PlaceItem(Context context, Place place) {
         this.context = context;
         this.id = idStatic++;
-        this.placeName = placeName;
-        this.placeDirection = placeDirection;
+        this.place = place;
 
     }
 
@@ -69,7 +68,7 @@ public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
 
     @Override
     public void bindViewHolder(FlexibleAdapter<IFlexible> adapter, PlaceViewHolder placeViewHolder, int position, List<Object> payloads) {
-        placeViewHolder.setFields(placeName, placeDirection);
+        placeViewHolder.setFields(place.getName().toString(), place.getAddress().toString());
     }
 
 

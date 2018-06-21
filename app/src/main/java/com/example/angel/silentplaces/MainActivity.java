@@ -16,10 +16,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Switch;
 
 import com.example.angel.silentplaces.provider.PlacesContract;
 import com.example.angel.silentplaces.provider.PlacesProvider;
 import com.example.angel.silentplaces.recycler.PlacesAdapter;
+import com.example.angel.silentplaces.utils.GeoFenceService;
+import com.example.angel.silentplaces.utils.Permissions;
+import com.example.angel.silentplaces.utils.PlacesUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -29,6 +33,8 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.master.permissionhelper.PermissionHelper;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     PermissionHelper permissionHelperLocalization;
 
+
+    String[] permisosLocalizacion = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
     private static GoogleApiClient googleApiClient;
 
 
@@ -52,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public RecyclerView placesRecyclerView;
     @BindView(R.id.permisos_localization_checkBox)
     public CheckBox permisosCheckBox;
+    @BindView(R.id.enable_switch)
+    public Switch enableGeofencesSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
+
+        startService(new Intent(this, GeoFenceService.class));
+
         //Configura los permisos
-        String[] permisosLocalizacion = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         permissionHelperLocalization = new PermissionHelper(this, permisosLocalizacion, PERSMISSIONS_LOCATION_CODE);
         permisosCheckBox.setChecked(permissionHelperLocalization.checkSelfPermission(permisosLocalizacion));
 
@@ -105,7 +117,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (id) {
             case PLACES_LOADER_ID:
                 Cursor dataCursor = (Cursor) data;
-                placesAdapter.updateDataSet(dataCursor);
+                PlacesUtils.PlacesDecoce(this, dataCursor, new PlacesUtils.placesDecodeTask() {
+                    @Override
+                    public void onPlacesReady(List<Place> places) {
+                        placesAdapter.updatePlaces(places);
+                        GeoFences.updateGeoFences(places);
+                    }
+                });
+
+                if (enableGeofencesSwitch.isChecked()) {
+                    GeoFences.geofencesRegister(MainActivity.this, googleApiClient);
+                } else {
+                    GeoFences.geofencesUnregister(MainActivity.this, googleApiClient);
+                }
+                
                 return;
         }
 
@@ -116,18 +141,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    @OnClick({R.id.add_place_button, R.id.permisos_localization_checkBox})
+    @OnClick({R.id.add_place_button, R.id.permisos_localization_checkBox, R.id.enable_switch})
     public void onClick(View v) {
-
 
         int id = v.getId();
 
         switch (id) {
+
             case R.id.add_place_button:
 
-                permissionHelperLocalization.request(new PermissionHelper.PermissionCallback() {
+                Permissions.RequestPermuissions(permissionHelperLocalization, new Permissions.onRequestPermissions() {
                     @Override
-                    public void onPermissionGranted() {
+                    public void permissionGranted(Boolean allGranted, String[] string) {
                         permisosCheckBox.setChecked(true);
                         try {
                             PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
@@ -138,51 +163,53 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         } catch (GooglePlayServicesNotAvailableException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override
-                    public void onIndividualPermissionGranted(String[] strings) {
-                    }
-
-                    @Override
-                    public void onPermissionDenied() {
-                        permisosCheckBox.setChecked(false);
-
-                    }
-
-                    @Override
-                    public void onPermissionDeniedBySystem() {
+                    public void permissionDenied() {
                         permisosCheckBox.setChecked(false);
                     }
                 });
                 return;
 
             case R.id.permisos_localization_checkBox:
-                permissionHelperLocalization.request(new PermissionHelper.PermissionCallback() {
 
+                Permissions.RequestPermuissions(permissionHelperLocalization, new Permissions.onRequestPermissions() {
                     @Override
-                    public void onPermissionGranted() {
+                    public void permissionGranted(Boolean allGranted, String[] string) {
                         permisosCheckBox.setChecked(true);
                     }
 
                     @Override
-                    public void onPermissionDeniedBySystem() {
+                    public void permissionDenied() {
                         permisosCheckBox.setChecked(false);
                     }
-
-                    @Override
-                    public void onPermissionDenied() {
-                        permisosCheckBox.setChecked(false);
-                    }
-
-                    @Override
-                    public void onIndividualPermissionGranted(String[] strings) {
-                    }
-
                 });
 
-                break;
+                return;
+
+            case (R.id.enable_switch):
+
+                Permissions.RequestPermuissions(permissionHelperLocalization, new Permissions.onRequestPermissions() {
+                    @Override
+                    public void permissionGranted(Boolean allGranted, String[] string) {
+                        permisosCheckBox.setChecked(true);
+
+                        if (enableGeofencesSwitch.isChecked()) {
+                            GeoFences.geofencesRegister(MainActivity.this, googleApiClient);
+                        } else {
+                            GeoFences.geofencesUnregister(MainActivity.this, googleApiClient);
+                        }
+
+                    }
+
+                    @Override
+                    public void permissionDenied() {
+                        permisosCheckBox.setChecked(false);
+                    }
+                });
+
+                return;
 
         }
     }
@@ -191,19 +218,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(this, data);
+
             if (place != null) {
-                String placename = place.getName().toString();
-                String placeAddress = place.getAddress().toString();
                 String placeId = place.getId();
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(PlacesContract.PlaceId, placeId);
                 ContentResolver contentResolver = this.getContentResolver();
                 contentResolver.insert(PlacesProvider.PlacesTable.CONTENT_URI_PLACES, contentValues);
-                Timber.d("Lugar seleccionado=%s", placename);
+                Timber.d("Lugar seleccionado=%s", place.getName().toString());
             }
-
-
         }
     }
 
