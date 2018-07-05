@@ -25,7 +25,7 @@ public class PlacesUtils {
 
         if (cursor == null) return;
         if (cursor.getCount() < 1) return;
-        
+
         GeoDataClient geoDataClient = Places.getGeoDataClient(context);
 
         int columnaId = cursor.getColumnIndex(PlacesContract.PlaceId);
@@ -34,7 +34,7 @@ public class PlacesUtils {
         final List<Place> listaPlaces = new ArrayList<>();
 
         for (int i = 0; i < cursor.getCount(); i++) {
-            cursor.moveToNext();
+            cursor.moveToPosition(i);
             placeIds.add(cursor.getString(columnaId));
         }
 

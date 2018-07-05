@@ -5,4 +5,6 @@
     <string name="settings_text">SETTINGS</string>
     <string name="enable_georeferences">ENABLE GEOFENCES</string>
     <string name="localization_permissions_text">LOCATION_PERMISSIONS</string>
+    <string name="delete_location">Delete geofence</string>
+    <string name="ALLOW_SILENT_MODE">ALLOW SILENT_MODE</string>
 </resources>

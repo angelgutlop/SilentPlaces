@@ -17,7 +17,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 public class PlacesProvider {
     public static final String AUTHORITY = "com.example.angel.silentplaces";
     public static final String pathPLACES = "places";
-    public static final String pathPLACESItem = pathPLACES + "/#";
+    public static final String pathPLACESItem = pathPLACES + "/*";
 
 
     @TableEndpoint(table = PlacesDataBase.PLACES)
@@ -27,8 +27,7 @@ public class PlacesProvider {
                 path = pathPLACES,
                 type = "vnd.android.cursor.dir/list",
                 defaultSort = PlacesContract.PlaceId + " DESC")
-        public static final Uri CONTENT_URI_PLACES = Uri.parse("content://" + AUTHORITY + "/" +pathPLACES);
-
+        public static final Uri CONTENT_URI_PLACES = Uri.parse("content://" + AUTHORITY + "/" + pathPLACES);
 
 
         @InexactContentUri(
@@ -37,8 +36,8 @@ public class PlacesProvider {
                 type = "vnd.android.cursor.item",
                 whereColumn = PlacesContract.PlaceId,
                 pathSegment = 1)
-        public static Uri withKey(String key) {
-            return CONTENT_URI_PLACES.buildUpon().appendEncodedPath(key).build();
+        public static Uri withPlace(String place) {
+            return CONTENT_URI_PLACES.buildUpon().appendEncodedPath(place).build();
         }
 
 
@@ -55,18 +54,15 @@ public class PlacesProvider {
         @NotifyUpdate(paths = pathPLACESItem)
         public static Uri[] onUpdate(Context context, Uri uri, String where, String[] whereArgs) {
             final String placeKey = uri.getPathSegments().get(1);
-            return new Uri[]{PlacesTable.CONTENT_URI_PLACES,withKey(placeKey)};
+            return new Uri[]{PlacesTable.CONTENT_URI_PLACES, withPlace(placeKey)};
         }
 
 
         @NotifyDelete
         public static Uri[] onDelete(Context context, Uri uri, String where, String[] whereArgs) {
             final String placeKey = uri.getPathSegments().get(1);
-            return new Uri[]{PlacesTable.CONTENT_URI_PLACES,withKey(placeKey)};
+            return new Uri[]{PlacesTable.CONTENT_URI_PLACES, withPlace(placeKey)};
         }
-
-
-
 
 
     }

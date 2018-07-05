@@ -27,7 +27,7 @@
             android:authorities="com.example.angel.silentplaces"
             android:name=".provider.generated.PlacesProvider"
             android:exported="false" />
-        <service android:name=".utils.GeoFenceService" />
+        <receiver android:name=".utils.GeoFenceService"></receiver>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -70,6 +70,53 @@
                 android:paddingRight="8dp"
                 android:paddingTop="4dp"
                 android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_my_location_blue_500_18dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/localization_permissions_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <CheckBox
+                    android:id="@+id/permisos_localization_checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:layout_weight="1" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spacerSettings">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:paddingBottom="4dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_explore_blue_500_18dp" />
 
             <Switch
@@ -102,7 +149,7 @@
                 android:paddingRight="8dp"
                 android:paddingTop="4dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_my_location_blue_500_18dp" />
+                app:srcCompat="@drawable/ic_ring_volume_blue_400_24dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -114,20 +161,20 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@string/localization_permissions_text"
+                    android:text="@string/ALLOW_SILENT_MODE"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                <CheckBox
-                    android:id="@+id/permisos_localization_checkBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <Switch
+                    android:id="@+id/enable_silent_mode_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
-                    android:layout_weight="1" />
             </RelativeLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 
     <Button

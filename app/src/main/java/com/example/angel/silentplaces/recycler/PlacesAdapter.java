@@ -28,6 +28,7 @@ public class PlacesAdapter extends FlexibleAdapter<PlaceItem> {
             items.add(new PlaceItem(context, place));
         }
         super.updateDataSet(items);
+        this.notifyDataSetChanged();
     }
 
     @Override

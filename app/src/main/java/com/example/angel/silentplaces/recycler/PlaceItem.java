@@ -2,6 +2,8 @@ package com.example.angel.silentplaces.recycler;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import butterknife.ButterKnife;
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.AbstractFlexibleItem;
 import eu.davidea.flexibleadapter.items.IFlexible;
+import eu.davidea.flexibleadapter.utils.DrawableUtils;
 import eu.davidea.viewholders.FlexibleViewHolder;
 
 public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
@@ -38,6 +41,10 @@ public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
 
     }
 
+    public String getPlaceId() {
+        if (place != null) return place.getId();
+        return "";
+    }
 
     @Override
     public boolean equals(Object inObject) {
@@ -69,6 +76,15 @@ public class PlaceItem extends AbstractFlexibleItem<PlaceItem.PlaceViewHolder> {
     @Override
     public void bindViewHolder(FlexibleAdapter<IFlexible> adapter, PlaceViewHolder placeViewHolder, int position, List<Object> payloads) {
         placeViewHolder.setFields(place.getName().toString(), place.getAddress().toString());
+
+        Context context = placeViewHolder.itemView.getContext();
+
+        Drawable drawable = DrawableUtils.getSelectableBackgroundCompat(
+                Color.WHITE, Color.parseColor("#dddddd"), // Same color of divider
+                DrawableUtils.getColorControlHighlight(context));
+
+        DrawableUtils.setBackgroundCompat(placeViewHolder.itemView, drawable);
+
     }
 
 

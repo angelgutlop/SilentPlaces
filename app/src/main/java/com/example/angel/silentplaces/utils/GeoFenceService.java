@@ -4,9 +4,11 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.AudioManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.example.angel.silentplaces.MainActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
@@ -54,12 +56,20 @@ public class GeoFenceService extends IntentService {
                     triggeringGeofences
             );
 
+
             // Send notification and log the transition details.
             Timber.v(geofenceTransitionDetails);
         } else {
             // Log the error.
             Timber.e("Error al entrar o salir de una zona supervisada: %s", geofenceTransition);
         }
+        
+        if (MainActivity.SILENT_MODE_ALLOWED) {
+            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) enableSilentMode();
+            else disableSilentMode();
+        }
+
+
     }
 
 
@@ -104,5 +114,18 @@ public class GeoFenceService extends IntentService {
                 return "Error en la geofence";
         }
     }
+
+
+    public void enableSilentMode() {
+        AudioManager am = (AudioManager) this.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+
+    }
+
+    public void disableSilentMode() {
+        AudioManager am = (AudioManager) this.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+    }
+
 
 }
